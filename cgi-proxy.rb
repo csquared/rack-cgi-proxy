@@ -26,6 +26,15 @@
 #  python's wsgi
 #  http://ken.coar.org/cgi/draft-coar-cgi-v11-03.txt
 #
+#  ruby's rack
+#  http://rack.rubyforge.org/doc/files/SPEC.html
+#
+#  php's $_SERVER
+#  http://php.net/manual/en/reserved.variables.server.php
+#
+#  and the spec:
+#  http://ken.coar.org/cgi/draft-coar-cgi-v11-03.txt
+#
 #
 #
 #
@@ -34,7 +43,15 @@
 #
 #
 class Rack::CgiProxy
-  ALL_CAPS = /^[A-Z_]+$/ 
+  PROTOCOL_SUBSET = %w{
+    AUTH_TYPE CONTENT_LENGTH CONTENT_TYPE GATEWAY_INTERFACE
+    PATH_INFO PATH_TRANSLATED QUERY_STRING REMOTE_ADDR REMOTE_HOST
+    AUTH_TYPE CONTENT_LENGTH CONTENT_TYPE GATEWAY_INTERFACE
+    PATH_INFO PATH_TRANSLATED QUERY_STRING REMOTE_ADDR REMOTE_HOST
+    REMOTE_IDENT REMOTE_USER REQUEST_METHOD SCRIPT_NAME SERVER_NAME
+    SERVER_PORT SERVER_PROTOCOL SERVER_SOFTWARE
+  }
+  PROTOCOL_MATCH = /#{PROTOCOL_SUBSET.join("|")}|HTTP_*/
 
   def initialize(app, proxy_url)
     @app = app
@@ -53,7 +70,7 @@ class Rack::CgiProxy
     STDOUT.puts "ENV",  env.inspect
     STDOUT.puts "MODS", mods
 
-    mods.select { |k,v| k.match ALL_CAPS }.each do |key, value|
+    mods.select { |k,v| k.match PROTOCOL_MATCH }.each do |key, value|
       env[key] = value
     end
     env['rack.input'] = StringIO.new(mods['body']) if mods['body']
@@ -69,7 +86,7 @@ class Rack::CgiProxy
   end
 
   def request_info(env)
-    env_vars = env.select { |k,v| k.match ALL_CAPS }
+    env_vars = env.select { |k,v| k.match PROTOCOL_MATCH }
     env_vars.tap do |hash|
       if env['rack.input']
         hash.merge!(:body => env['rack.input'].read) 
