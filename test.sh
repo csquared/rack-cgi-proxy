@@ -3,11 +3,11 @@ some_silence="....."
 echo $1
 echo "GET /?*head* => HEAD request"
 echo "GET $1?head=true" 
-curl "$1?head=true" 
+open "$1?head=true" 
 echo $some_silence
 echo "GET /?*post=query* => POST request, query string as post body"
 echo "GET $1?post=query&foo=bar&jay=zee"
-curl "$1?post=query&foo=bar&jay=zee"
+open "$1?post=query&foo=bar&jay=zee"
 echo $some_silence
 echo "# GET /?*post=sup* => POST request, known body, sets QUERY_STRING for fun as well"
 echo "GET $1?post=sup&foo=bar&jay=zee"

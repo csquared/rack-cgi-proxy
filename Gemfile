@@ -1,6 +1,5 @@
-source :rubygems
+source 'http://rubygems.org'
 
-gem 'rack'
-gem 'rest-client'
-gem 'sinatra', :require => false
-gem 'json'
+# Specify your gem's dependencies in rack-cgi-proxy.gemspec
+gemspec
+gem 'sinatra'

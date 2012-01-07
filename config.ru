@@ -1,7 +1,6 @@
 require 'bundler'
 Bundler.require
 require 'sinatra/base'
-require './cgi-proxy'
 
 # Cloud CGI Proxy as a Service (CPaaS)
 ENV['CLOUD_PROXY_URL'] ||= 'http://localhost:4567/user1'

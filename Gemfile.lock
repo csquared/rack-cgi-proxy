@@ -1,3 +1,11 @@
+PATH
+  remote: .
+  specs:
+    rack-cgi-proxy (0.0.1)
+      json
+      rack
+      rest-client
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -18,7 +26,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  json
-  rack
-  rest-client
+  rack-cgi-proxy!
   sinatra
